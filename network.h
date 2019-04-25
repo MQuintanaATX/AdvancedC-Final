@@ -33,6 +33,7 @@ using namespace std;
  * Also, you should not have the number of io pairs specified anywhere,
  * you need to deduce that number from the data file itself.
  */
+/* Commenting out due to config file containing these
 #define ON 1.0
 #define OFF 0.0
 #define OFFSOFT 0.1
@@ -46,7 +47,7 @@ using namespace std;
 #define MAX_EPOCH 1000
 #define LR .35
 #define EE 2.718281828
-
+*/
 /* input layer consisting of activations x (neurons) and weights w
    to the hidden layer. these are created as pointers that will be allocated
  * as 1 and 2 dimensional arrays. */
