@@ -68,3 +68,18 @@ NNetwork::NNetwork() {
     }
 
 }
+
+/*
+ * Debug Functions
+ */
+void NNetwork::printConfig() {
+    cout << "Configuration: " << endl;
+    cout << "ON: " << on << endl;
+    cout << "OFF: " << off << endl;
+    cout << "inUnits: " << inUnits << endl;
+    cout << "hidUnits: " << hidUnits << endl;
+    cout << "outUnits: " << outUnits << endl;
+    cout << "maxEpoch: " << maxEpoch << endl;
+    cout << "learnRate: " << learnRate << endl;
+    cout << "ee: " << ee << endl;
+}

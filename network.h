@@ -110,7 +110,11 @@ public:
     /* this loads weights from a saved weights file so you can re-load
      a trained network and use it, instead of retraining.*/
     void loadweights();
-
+    /*
+     * Debug Functions
+     * Used to ensure proper configuration.
+     */
+    void printConfig();
 
 private:
     /* this file is for debug purposes. I save my MSE from compute errors so
