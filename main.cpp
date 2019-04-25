@@ -14,4 +14,6 @@
 
 int main() {
     cout << "Final Project: Neural Network" << endl;
+    NNetwork skynet;
+    skynet.printConfig();
 }

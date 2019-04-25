@@ -14,7 +14,7 @@ NNetwork::NNetwork() {
     //Filestream object; used to load files from the config file
     fstream config;
     //Holds characters as the line is read, holds the read line
-    string container, fileline;
+    string container = "", fileline;
     //Counter; used for a switch statement later
     int counter = 0;
     //Opens the file; hardcoded due to being a toy problem
@@ -23,7 +23,7 @@ NNetwork::NNetwork() {
     while (!config.eof()){
         getline(config, fileline);
         //reads each line of the file
-        for (int i; i < fileline.size(); i++){
+        for (int i = 0; i < fileline.size(); i++){
             //Checks for the delimiter character, |. If not, adds it to the container variable
             if (fileline[i] != '|') {
                 container += fileline[i];
@@ -59,14 +59,18 @@ NNetwork::NNetwork() {
                         break;
 
                 }
-
-
+                break;
             }
         }
         //Increments counter for next loop
         counter++;
+        //clears container
+        container = "";
     }
 
+}
+
+NNetwork::~NNetwork() {
 }
 
 /*
@@ -82,4 +86,5 @@ void NNetwork::printConfig() {
     cout << "maxEpoch: " << maxEpoch << endl;
     cout << "learnRate: " << learnRate << endl;
     cout << "ee: " << ee << endl;
+
 }

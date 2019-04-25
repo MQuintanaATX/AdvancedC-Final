@@ -9,5 +9,5 @@
 
 #ifndef FINAL_MAIN_H
 #define FINAL_MAIN_H
-
+using namespace  std;
 #endif //FINAL_MAIN_H
