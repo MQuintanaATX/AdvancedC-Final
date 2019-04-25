@@ -1,0 +1,8 @@
+#Ignore all
+*
+
+#Unignore .dat, .h, .cfg, and .cpp
+!*.dat
+!*.h
+!*.cfg
+!*.cpp
