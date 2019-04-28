@@ -73,6 +73,16 @@ NNetwork::NNetwork() {
 NNetwork::~NNetwork() {
 }
 
+//Responsible for generating random weights for the first pass
+float NNetwork::randomWeight () {
+          //|Casts random into float   | Divides that value, also by float
+    return static_cast <float>(rand()) / static_cast <float> (RAND_MAX);
+};
+
+void NNetwork::buildIOData() {
+    cout << "stuff";
+}
+
 /*
  * Debug Functions
  */

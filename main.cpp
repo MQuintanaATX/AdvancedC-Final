@@ -14,6 +14,8 @@
 
 int main() {
     cout << "Final Project: Neural Network" << endl;
+    //Seeding the Rand function
+    srand (time(NULL));
     NNetwork skynet;
     skynet.printConfig();
 }

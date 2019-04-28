@@ -111,9 +111,10 @@ public:
     /* this loads weights from a saved weights file so you can re-load
      a trained network and use it, instead of retraining.*/
     void loadweights();
+
     /*
      * Debug Functions
-     * Used to ensure proper configuration.
+     * Used to ensure proper configuration. Student's functions
      */
     void printConfig();
 
@@ -135,6 +136,8 @@ private:
        and loaded in loadIOFile() */
     float **inputData, **outputData;
 
+    // MQ: Holds the # of input pairs
+    int count;
     // a pointer to a neural network. this will be dynamically allocated
     nNet *nNetwork;
 
