@@ -100,7 +100,7 @@ void NNetwork::buildInputLayer() {
     }
     int innerLoop, outerLoop;
     for (outerLoop = 0 ; outerLoop < inUnits + 1; outerLoop++) {
-        if (outerLoop > inUnits) { //Loads the bias node with the max value
+        if (outerLoop == inUnits) { //Loads the bias node with the max value
             nNetwork->inputLayer.x[outerLoop] = 1;
         } else {
             //Using .314 as a sentinel for activations
@@ -127,7 +127,7 @@ void NNetwork::buildHiddenLayer(){
     }
     int innerLoop, outerLoop;
     for (outerLoop = 0 ; outerLoop < hidUnits + 1; outerLoop++) {
-        if (outerLoop > hidUnits) { //Loads the bias node with the max value
+        if (outerLoop == hidUnits) { //Loads the bias node with the max value
             nNetwork->hiddenLayer.x[outerLoop] = 1;
         } else {
             //Using .796 as a sentinel for activations
