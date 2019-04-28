@@ -17,6 +17,7 @@ NNetwork::NNetwork() {
 NNetwork::~NNetwork() {
 }
 
+//Loads the data file
 void NNetwork::loadCfgParams() {
     //Filestream object; used to load files from the config file
     fstream config;
@@ -80,6 +81,19 @@ float NNetwork::randomWeight () {
           //|Casts random into float   | Divides that value, also by float
     return static_cast <float>(rand()) / static_cast <float> (RAND_MAX);
 };
+
+/*
+ * Builds the network layers
+ */
+
+//Inner layer
+void NNetwork::buildInputLayer() {
+    int innerLoop = 0, outerLoop = 0;
+    for (outerLoop; outerLoop < inUnits; outerLoop++){
+        for (innerLoop; innerLoop < hidUnits; innerLoop++)
+            nNetwork->inputLayer.w[outerLoop][innerLoop] = randomWeight();
+    }
+}
 
 void NNetwork::buildIOData() {
     cout << "stuff";
