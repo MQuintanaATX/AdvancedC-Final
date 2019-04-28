@@ -13,6 +13,7 @@
 NNetwork::NNetwork() {
     loadCfgParams();
     buildInputLayer();
+    buildHiddenLayer();
 }
 
 NNetwork::~NNetwork() {
@@ -114,16 +115,16 @@ void NNetwork::buildHiddenLayer(){
     nNetwork->hiddenLayer.w = new float* [inUnits + 1];
     nNetwork->hiddenLayer.e = new float;
     //Creates the second dimension of the array
-    for (int i = 0; i < inUnits + 1; i++) {
-        nNetwork->hiddenLayer.w[i] = new  float [hidUnits];
+    for (int i = 0; i < hidUnits + 1; i++) {
+        nNetwork->hiddenLayer.w[i] = new  float [outUnits];
     }
     int innerLoop, outerLoop;
     for (outerLoop = 0 ; outerLoop < hidUnits + 1; outerLoop++) {
         for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
             nNetwork->hiddenLayer.w[outerLoop][innerLoop] = randomWeight();
-            /*debug statements to help with displayInnerLayerWeights
+            //debug statements to help with displayHiddenLayer
             cout << "DEBUG\t Node " << outerLoop << " Weight# " << innerLoop;
-            cout << " Weight " << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;*/
+            cout << " Weight " << nNetwork->hiddenLayer.w[outerLoop][innerLoop] << endl;
         }
     }
 }
