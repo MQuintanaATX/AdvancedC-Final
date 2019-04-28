@@ -147,6 +147,16 @@ void NNetwork::displayInputLayerWeights() {
     }
 }
 
+void NNetwork::displayHiddenLayerWeights() {
+    int innerLoop, outerLoop;
+    cout << endl << "Hidden Layer Weights" << endl;
+    for (outerLoop = 0 ; outerLoop < hidUnits + 1; outerLoop++) {
+        for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
+            cout << "\t Node " << outerLoop << " Weight# " << innerLoop << " Weight ";
+            cout  << nNetwork->hiddenLayer.w[outerLoop][innerLoop] << endl;
+        }
+    }
+}
 
 // ***************** Student Debugs
 void NNetwork::printConfig() {
