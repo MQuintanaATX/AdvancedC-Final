@@ -19,5 +19,6 @@ int main() {
     NNetwork skynet;
     skynet.printConfig();
     skynet.displayInputLayerWeights();
+    skynet.displayInputActivations();
     skynet.displayHiddenLayerWeights();
 }

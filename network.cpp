@@ -100,7 +100,7 @@ void NNetwork::buildInputLayer() {
     }
     int innerLoop, outerLoop;
     for (outerLoop = 0 ; outerLoop < inUnits + 1; outerLoop++) {
-        if (outerLoop > inUnits) {
+        if (outerLoop > inUnits) { //Loads the bias node with the max value
             nNetwork->inputLayer.x[outerLoop] = 1;
         } else {
             //Using .314 as a sentinel for activations
@@ -127,7 +127,7 @@ void NNetwork::buildHiddenLayer(){
     }
     int innerLoop, outerLoop;
     for (outerLoop = 0 ; outerLoop < hidUnits + 1; outerLoop++) {
-        if (outerLoop > hidUnits) {
+        if (outerLoop > hidUnits) { //Loads the bias node with the max value
             nNetwork->hiddenLayer.x[outerLoop] = 1;
         } else {
             //Using .796 as a sentinel for activations
@@ -146,6 +146,9 @@ void NNetwork::buildHiddenLayer(){
 void NNetwork::buildOutputLayer() {
     nNetwork->outputLayer.x = new float [outUnits];
     nNetwork->outputLayer.e = new float [outUnits];
+    for (int loop = 0 ; loop < hidUnits + 1; loop++) {
+        nNetwork->outputLayer.x[loop] = .555;
+    }
 }
 
 
@@ -176,6 +179,15 @@ void NNetwork::displayHiddenLayerWeights() {
             cout << "\t Node " << outerLoop << " Weight# " << innerLoop << " Weight ";
             cout  << nNetwork->hiddenLayer.w[outerLoop][innerLoop] << endl;
         }
+    }
+}
+
+void NNetwork::displayInputActivations() {
+    int innerLoop, outerLoop;
+    cout << endl << "Inner Layer Activations" << endl;
+    for (outerLoop = 0; outerLoop < inUnits + 1; outerLoop++) {
+        cout << "\t Node " << outerLoop << " Activation ";
+        cout  << nNetwork->inputLayer.x[outerLoop] << endl;
     }
 }
 
