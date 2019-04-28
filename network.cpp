@@ -11,6 +11,13 @@
  * Constructor
  */
 NNetwork::NNetwork() {
+    loadCfgParams();
+}
+
+NNetwork::~NNetwork() {
+}
+
+void NNetwork::loadCfgParams() {
     //Filestream object; used to load files from the config file
     fstream config;
     //Holds characters as the line is read, holds the read line
@@ -67,12 +74,7 @@ NNetwork::NNetwork() {
         //clears container
         container = "";
     }
-
 }
-
-NNetwork::~NNetwork() {
-}
-
 //Responsible for generating random weights for the first pass
 float NNetwork::randomWeight () {
           //|Casts random into float   | Divides that value, also by float
