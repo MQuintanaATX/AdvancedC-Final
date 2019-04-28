@@ -89,15 +89,23 @@ float NNetwork::randomWeight () {
 
 //Inner layer
 void NNetwork::buildInputLayer() {
+    float value;
     nNetwork->inputLayer.x = new float [inUnits+1];
     nNetwork->inputLayer.w = new float* [inUnits];
+    //Creates the second dimension of the array
     for (int i = 0; i < inUnits; i++) {
         nNetwork->inputLayer.w[i] = new  float [hidUnits];
     }
     int innerLoop, outerLoop;
     for (outerLoop = 0 ; outerLoop < inUnits; outerLoop++) {
-        for (innerLoop = 0; innerLoop < hidUnits - 1; innerLoop++) {
-            nNetwork->inputLayer.w[outerLoop][innerLoop] = randomWeight();
+        for (innerLoop = 0; innerLoop < hidUnits; innerLoop++) {
+            value = randomWeight();
+            cout << endl << "DEBUG: VALUE " << value << endl;
+
+            nNetwork->inputLayer.w[outerLoop][innerLoop] = value;
+            /*debug statements to help with displayInnerLayerWeights
+            cout << "DEBUG\t Node " << outerLoop << " Weight# " << innerLoop;
+            cout << " Weight " << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;*/
         }
     }
 }
@@ -110,27 +118,29 @@ void NNetwork::buildIOData() {
  * Debug Functions
  */
 //******************Professor Debug Statements
-void NNetwork::displayInputLayerWeights(){
-    int innerLoop = 0, outerLoop = 0;
-    cout << "Inner Layer Weights\n" << endl;
-    for (outerLoop; outerLoop < inUnits + 1; outerLoop++){
-        for (innerLoop; innerLoop < hidUnits + 1; innerLoop++)
-            cout << "\tNode " << outerLoop << "\tWeight #: " << innerLoop;
-            cout << "\tWeight: " << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;
+void NNetwork::displayInputLayerWeights() {
+    int innerLoop, outerLoop;
+    cout << endl << "Inner Layer Weights" << endl;
+    for (outerLoop = 0; outerLoop < inUnits; outerLoop++) {
+        for (innerLoop = 0; innerLoop < hidUnits; innerLoop++) {
+            cout << "\t Node " << outerLoop << " Weight# " << innerLoop << " Weight ";
+            cout  << nNetwork->inputLayer.w[outerLoop][innerLoop];
+            cout << endl;
+        }
     }
-};
+}
 
 
 // ***************** Student Debugs
 void NNetwork::printConfig() {
-    cout << "Configuration: " << endl;
-    cout << "ON: " << on << endl;
-    cout << "OFF: " << off << endl;
-    cout << "inUnits: " << inUnits << endl;
-    cout << "hidUnits: " << hidUnits << endl;
-    cout << "outUnits: " << outUnits << endl;
-    cout << "maxEpoch: " << maxEpoch << endl;
-    cout << "learnRate: " << learnRate << endl;
-    cout << "ee: " << ee << endl;
+    cout << "Configuration " << endl;
+    cout << "\tON: " << on << endl;
+    cout << "\tOFF: " << off << endl;
+    cout << "\tinUnits: " << inUnits << endl;
+    cout << "\thidUnits: " << hidUnits << endl;
+    cout << "\toutUnits: " << outUnits << endl;
+    cout << "\tmaxEpoch: " << maxEpoch << endl;
+    cout << "\tlearnRate: " << learnRate << endl;
+    cout << "\tee: " << ee << endl;
 
 }
