@@ -18,4 +18,5 @@ int main() {
     srand (time(NULL));
     NNetwork skynet;
     skynet.printConfig();
+    //skynet.displayInputLayerWeights();
 }

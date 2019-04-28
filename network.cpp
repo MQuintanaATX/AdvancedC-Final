@@ -12,6 +12,7 @@
  */
 NNetwork::NNetwork() {
     loadCfgParams();
+    buildInputLayer();
 }
 
 NNetwork::~NNetwork() {
@@ -88,10 +89,16 @@ float NNetwork::randomWeight () {
 
 //Inner layer
 void NNetwork::buildInputLayer() {
-    int innerLoop = 0, outerLoop = 0;
-    for (outerLoop; outerLoop < inUnits; outerLoop++){
-        for (innerLoop; innerLoop < hidUnits; innerLoop++)
+    nNetwork->inputLayer.x = new float [inUnits+1];
+    nNetwork->inputLayer.w = new float* [inUnits];
+    for (int i = 0; i < inUnits; i++) {
+        nNetwork->inputLayer.w[i] = new  float [hidUnits];
+    }
+    int innerLoop, outerLoop;
+    for (outerLoop = 0 ; outerLoop < inUnits; outerLoop++) {
+        for (innerLoop = 0; innerLoop < hidUnits - 1; innerLoop++) {
             nNetwork->inputLayer.w[outerLoop][innerLoop] = randomWeight();
+        }
     }
 }
 
@@ -102,6 +109,19 @@ void NNetwork::buildIOData() {
 /*
  * Debug Functions
  */
+//******************Professor Debug Statements
+void NNetwork::displayInputLayerWeights(){
+    int innerLoop = 0, outerLoop = 0;
+    cout << "Inner Layer Weights\n" << endl;
+    for (outerLoop; outerLoop < inUnits + 1; outerLoop++){
+        for (innerLoop; innerLoop < hidUnits + 1; innerLoop++)
+            cout << "\tNode " << outerLoop << "\tWeight #: " << innerLoop;
+            cout << "\tWeight: " << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;
+    }
+};
+
+
+// ***************** Student Debugs
 void NNetwork::printConfig() {
     cout << "Configuration: " << endl;
     cout << "ON: " << on << endl;
