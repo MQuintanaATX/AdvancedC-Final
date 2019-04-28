@@ -90,19 +90,37 @@ float NNetwork::randomWeight () {
 //Inner layer
 void NNetwork::buildInputLayer() {
     float value;
-    nNetwork->inputLayer.x = new float [inUnits+1];
-    nNetwork->inputLayer.w = new float* [inUnits];
+    nNetwork->inputLayer.x = new float [inUnits + 1];
+    nNetwork->inputLayer.w = new float* [inUnits + 1];
     //Creates the second dimension of the array
-    for (int i = 0; i < inUnits; i++) {
+    for (int i = 0; i < inUnits + 1; i++) {
         nNetwork->inputLayer.w[i] = new  float [hidUnits];
     }
     int innerLoop, outerLoop;
-    for (outerLoop = 0 ; outerLoop < inUnits; outerLoop++) {
-        for (innerLoop = 0; innerLoop < hidUnits; innerLoop++) {
-            value = randomWeight();
-            cout << endl << "DEBUG: VALUE " << value << endl;
+    for (outerLoop = 0 ; outerLoop < inUnits + 1; outerLoop++) {
+        for (innerLoop = 0; innerLoop < hidUnits + 1; innerLoop++) {
+            nNetwork->inputLayer.w[outerLoop][innerLoop] = randomWeight();
+            /*debug statements to help with displayInnerLayerWeights
+            cout << "DEBUG\t Node " << outerLoop << " Weight# " << innerLoop;
+            cout << " Weight " << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;*/
+        }
+    }
+}
 
-            nNetwork->inputLayer.w[outerLoop][innerLoop] = value;
+//Hidden layer
+void NNetwork::buildHiddenLayer(){
+    float value;
+    nNetwork->hiddenLayer.x = new float [inUnits + 1];
+    nNetwork->hiddenLayer.w = new float* [inUnits + 1];
+    nNetwork->hiddenLayer.e = new float;
+    //Creates the second dimension of the array
+    for (int i = 0; i < inUnits + 1; i++) {
+        nNetwork->hiddenLayer.w[i] = new  float [hidUnits];
+    }
+    int innerLoop, outerLoop;
+    for (outerLoop = 0 ; outerLoop < hidUnits + 1; outerLoop++) {
+        for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
+            nNetwork->hiddenLayer.w[outerLoop][innerLoop] = randomWeight();
             /*debug statements to help with displayInnerLayerWeights
             cout << "DEBUG\t Node " << outerLoop << " Weight# " << innerLoop;
             cout << " Weight " << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;*/
@@ -121,11 +139,10 @@ void NNetwork::buildIOData() {
 void NNetwork::displayInputLayerWeights() {
     int innerLoop, outerLoop;
     cout << endl << "Inner Layer Weights" << endl;
-    for (outerLoop = 0; outerLoop < inUnits; outerLoop++) {
-        for (innerLoop = 0; innerLoop < hidUnits; innerLoop++) {
+    for (outerLoop = 0; outerLoop < inUnits + 1; outerLoop++) {
+        for (innerLoop = 0; innerLoop < hidUnits + 1; innerLoop++) {
             cout << "\t Node " << outerLoop << " Weight# " << innerLoop << " Weight ";
-            cout  << nNetwork->inputLayer.w[outerLoop][innerLoop];
-            cout << endl;
+            cout  << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;
         }
     }
 }
