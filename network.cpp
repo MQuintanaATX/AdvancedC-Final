@@ -127,6 +127,12 @@ void NNetwork::buildHiddenLayer(){
     }
     int innerLoop, outerLoop;
     for (outerLoop = 0 ; outerLoop < hidUnits + 1; outerLoop++) {
+        if (outerLoop > hidUnits) {
+            nNetwork->hiddenLayer.x[outerLoop] = 1;
+        } else {
+            //Using .796 as a sentinel for activations
+            nNetwork->hiddenLayer.x[outerLoop] = .796;
+        }
         for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
             nNetwork->hiddenLayer.w[outerLoop][innerLoop] = randomWeight();
             //debug statements to help with displayHiddenLayer
