@@ -183,11 +183,28 @@ void NNetwork::displayHiddenLayerWeights() {
 }
 
 void NNetwork::displayInputActivations() {
-    int innerLoop, outerLoop;
+    int outerLoop;
     cout << endl << "Inner Layer Activations" << endl;
     for (outerLoop = 0; outerLoop < inUnits + 1; outerLoop++) {
         cout << "\t Node " << outerLoop << " Activation ";
         cout  << nNetwork->inputLayer.x[outerLoop] << endl;
+    }
+}
+void NNetwork::displayHiddenActivations(){
+    int outerLoop;
+    cout << endl << "Hidden Layer Activations" << endl;
+    for (outerLoop = 0; outerLoop < hidUnits + 1; outerLoop++) {
+        cout << "\t Node " << outerLoop << " Activation ";
+        cout  << nNetwork->hiddenLayer.x[outerLoop] << endl;
+    }
+}
+
+void NNetwork::displayOutputActivations(){
+    int loop;
+    cout << endl << "Output Layer Activations" << endl;
+    for (loop = 0; loop < outUnits; loop++) {
+        cout << "\t Node " << loop << " Activation ";
+        cout  << nNetwork->outputLayer.x[loop] << endl;
     }
 }
 
