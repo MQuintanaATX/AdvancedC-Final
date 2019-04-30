@@ -211,7 +211,7 @@ bool NNetwork::loadIOFile() {
     fstream inputFile;
     string fileName;
     string lineContainer;
-    int positionFlag;
+    int positionFlag = 0;
     switch (choice) {
         case 1:
             fileName = "and.dat";

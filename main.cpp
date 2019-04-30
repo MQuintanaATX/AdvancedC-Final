@@ -23,4 +23,5 @@ int main() {
     skynet.displayHiddenLayerWeights();
     skynet.displayHiddenActivations();
     skynet.displayOutputActivations();
+    skynet.displayTrainingInput();
 }
