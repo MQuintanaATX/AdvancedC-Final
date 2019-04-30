@@ -159,6 +159,8 @@ void NNetwork::buildIOData() {
     fstream inputFile;
     string fileName;
     string lineContainer;
+    //Counts how many data entries are there in a line.
+    int entryCounter = 0;
     //Gets user input for the file
     //  Note: Aware this is bad practice in the real world, but
     //  Neural network use, coding it within the class.
@@ -178,13 +180,44 @@ void NNetwork::buildIOData() {
             break;
     }
     inputFile.open(fileName);
+    getline(inputFile, lineContainer);
+    count++;
+    for (int i = 0; i < lineContainer.size(); i++) {
+        if (isdigit(lineContainer[i])) {
+            entryCounter++;
+        }
+    }
     while(!inputFile.eof()){
         getline(inputFile, lineContainer);
         if (lineContainer.size() > 2){
             count++;
         }
     }
+    /*Array Initialization*/
+    inputData = new float* [count];
+    for (int i = 0; i < count; i++) {
+        inputData[i] = new  float [entryCounter];
+    }
     cout << endl;
+}
+
+bool NNetwork::loadIOFile() {
+    /* Variable Initialization*/
+    fstream inputFile;
+    string fileName;
+    string lineContainer;
+    switch (choice) {
+        case 1:
+            fileName = "and.dat";
+            break;
+        case 2:
+            fileName = "or.dat";
+            break;
+        case 3:
+            fileName = "xor.dat";
+            break;
+    }
+
 }
 
 /*
