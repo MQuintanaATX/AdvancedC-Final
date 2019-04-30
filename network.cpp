@@ -227,8 +227,8 @@ bool NNetwork::loadIOFile() {
     for (int i = 0; i < count; i++){
         getline(inputFile, lineContainer);
         for (int o = 0; o < lineContainer.size(); o++){
-            if (isdigit(lineContainer[i])) {
-                inputData[i][positionFlag] = lineContainer[o];
+            if (isdigit(lineContainer[o])) {
+                inputData[i][positionFlag] = lineContainer[o] - 48;
                 positionFlag++;
             }
         }
@@ -306,7 +306,7 @@ void NNetwork::displayTrainingInput(){
     int innerLoop = 0, outerLoop = 0;
     cout << endl << "Training Input Data" << endl;
     for (outerLoop = 0; outerLoop < count; outerLoop++) {
-        cout << "\tPair " << outerLoop;
+        cout << "\tPair " << outerLoop << "\t";
         for (innerLoop = 0; innerLoop < inUnits; innerLoop++) {
             cout << inputData[outerLoop][innerLoop] << " ";
         }
