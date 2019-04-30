@@ -274,6 +274,7 @@ void NNetwork::displayHiddenLayerWeights() {
     }
 }
 
+
 void NNetwork::displayInputActivations() {
     int outerLoop;
     cout << endl << "Inner Layer Activations" << endl;
@@ -300,6 +301,18 @@ void NNetwork::displayOutputActivations(){
     }
 }
 
+
+void NNetwork::displayTrainingInput(){
+    int innerLoop = 0, outerLoop = 0;
+    cout << endl << "Training Input Data" << endl;
+    for (outerLoop = 0; outerLoop < count; outerLoop++) {
+        cout << "\tPair " << outerLoop;
+        for (innerLoop = 0; innerLoop < inUnits; innerLoop++) {
+            cout << inputData[outerLoop][innerLoop] << " ";
+        }
+        cout << endl;
+    }
+}
 // ***************** Student Debugs
 void NNetwork::printConfig() {
     cout << "Configuration " << endl;
