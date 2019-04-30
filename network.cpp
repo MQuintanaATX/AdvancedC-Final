@@ -17,6 +17,7 @@ NNetwork::NNetwork() {
     buildHiddenLayer();
     buildOutputLayer();
     buildIOData();
+    loadIOFile();
 }
 
 NNetwork::~NNetwork() {
@@ -160,7 +161,9 @@ void NNetwork::buildIOData() {
     string fileName;
     string lineContainer;
     //Counts how many data entries are there in a line.
-    int entryCounter = 0;
+    int inputCounter = 0, outputCounter = 0;
+    //Counts how many ints are in the first line
+    int firstLine;
     //Gets user input for the file
     //  Note: Aware this is bad practice in the real world, but
     //  Neural network use, coding it within the class.
@@ -182,21 +185,23 @@ void NNetwork::buildIOData() {
     inputFile.open(fileName);
     getline(inputFile, lineContainer);
     count++;
-    for (int i = 0; i < lineContainer.size(); i++) {
-        if (isdigit(lineContainer[i])) {
-            entryCounter++;
-        }
-    }
+    firstLine = lineContainer.size();
+    //Counts the number of Input lines
     while(!inputFile.eof()){
         getline(inputFile, lineContainer);
-        if (lineContainer.size() > 2){
+        if (lineContainer.size() == firstLine){
             count++;
         }
     }
+    inputFile.close();
     /*Array Initialization*/
     inputData = new float* [count];
     for (int i = 0; i < count; i++) {
-        inputData[i] = new  float [entryCounter];
+        inputData[i] = new  float [inUnits];
+    }
+    outputData = new float *[count];
+    for (int i = 0; i < count; i++) {
+        outputData[i] = new  float [outUnits];
     }
     cout << endl;
 }
@@ -206,6 +211,7 @@ bool NNetwork::loadIOFile() {
     fstream inputFile;
     string fileName;
     string lineContainer;
+    int positionFlag;
     switch (choice) {
         case 1:
             fileName = "and.dat";
@@ -217,7 +223,29 @@ bool NNetwork::loadIOFile() {
             fileName = "xor.dat";
             break;
     }
-
+    inputFile.open(fileName);
+    for (int i = 0; i < count; i++){
+        getline(inputFile, lineContainer);
+        for (int o = 0; o < lineContainer.size(); o++){
+            if (isdigit(lineContainer[i])) {
+                inputData[i][positionFlag] = lineContainer[o];
+                positionFlag++;
+            }
+        }
+        positionFlag = 0;
+    }
+    for (int i = 0; i < count; i++) {
+        getline(inputFile, lineContainer);
+        for (int o = 0; o < lineContainer.size(); o++){
+            if (isdigit(lineContainer[i])) {
+                outputData[i][positionFlag] = lineContainer[o];
+                positionFlag++;
+            }
+        }
+        positionFlag = 0;
+    }
+    inputFile.close();
+    return true;
 }
 
 /*
