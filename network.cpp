@@ -11,10 +11,12 @@
  * Constructor
  */
 NNetwork::NNetwork() {
+    count = 0;
     loadCfgParams();
     buildInputLayer();
     buildHiddenLayer();
     buildOutputLayer();
+    buildIOData();
 }
 
 NNetwork::~NNetwork() {
@@ -91,10 +93,11 @@ float NNetwork::randomWeight () {
 
 //Inner layer
 void NNetwork::buildInputLayer() {
+    //Initializes the arrays
     float value;
     nNetwork->inputLayer.x = new float [inUnits + 1];
     nNetwork->inputLayer.w = new float* [inUnits + 1];
-    //Creates the second dimension of the array
+    //Creates the second dimension of the weights array
     for (int i = 0; i < inUnits + 1; i++) {
         nNetwork->inputLayer.w[i] = new  float [hidUnits];
     }
@@ -118,10 +121,11 @@ void NNetwork::buildInputLayer() {
 //Hidden layer
 void NNetwork::buildHiddenLayer(){
     float value;
+    //Initializes the arrays
     nNetwork->hiddenLayer.x = new float [hidUnits + 1];
     nNetwork->hiddenLayer.w = new float* [hidUnits + 1];
     nNetwork->hiddenLayer.e = new float [hidUnits + 1];
-    //Creates the second dimension of the array
+    //Creates the second dimension of the weights array
     for (int i = 0; i < hidUnits + 1; i++) {
         nNetwork->hiddenLayer.w[i] = new  float [outUnits];
     }
@@ -135,15 +139,13 @@ void NNetwork::buildHiddenLayer(){
         }
         for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
             nNetwork->hiddenLayer.w[outerLoop][innerLoop] = randomWeight();
-            //debug statements to help with displayHiddenLayer
-            cout << "DEBUG\t Node " << outerLoop << " Weight# " << innerLoop;
-            cout << " Weight " << nNetwork->hiddenLayer.w[outerLoop][innerLoop] << endl;
         }
     }
 }
 
 //Output layer
 void NNetwork::buildOutputLayer() {
+    //Initializes the arrays
     nNetwork->outputLayer.x = new float [outUnits];
     nNetwork->outputLayer.e = new float [outUnits];
     for (int loop = 0 ; loop < hidUnits + 1; loop++) {
@@ -153,7 +155,36 @@ void NNetwork::buildOutputLayer() {
 
 
 void NNetwork::buildIOData() {
-    cout << "stuff";
+    /* Variable Initialization*/
+    fstream inputFile;
+    string fileName;
+    string lineContainer;
+    //Gets user input for the file
+    //  Note: Aware this is bad practice in the real world, but
+    //  Neural network use, coding it within the class.
+    cout << "\nWhich file would you like to use for training?";
+    cout << "\n\t1) and.dat \n\t2) or.dat\n\t3) xor.dat\n" << "Enter your choice: ";
+    //Note: No error checking; would in a more robust application, per the above note
+    cin >> choice;
+    switch (choice) {
+        case 1:
+            fileName = "and.dat";
+            break;
+        case 2:
+            fileName = "or.dat";
+            break;
+        case 3:
+            fileName = "xor.dat";
+            break;
+    }
+    inputFile.open(fileName);
+    while(!inputFile.eof()){
+        getline(inputFile, lineContainer);
+        if (lineContainer.size() > 2){
+            count++;
+        }
+    }
+    cout << endl;
 }
 
 /*

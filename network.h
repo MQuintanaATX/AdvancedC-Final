@@ -136,8 +136,12 @@ private:
        and loaded in loadIOFile() */
     float **inputData, **outputData;
 
-    // MQ: Holds the # of input pairs
+    // MQ Variable Declaration */
+    // Holds the # of input pairs
     int count;
+    //Flag to help parse which file is being used
+    int choice;
+
     // a pointer to a neural network. this will be dynamically allocated
     nNet *nNetwork;
 
