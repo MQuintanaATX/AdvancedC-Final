@@ -1,7 +1,8 @@
 Beginner Neural Network - In Progress Project
-For Advanced C++ 
 
-This project contains a neural network class to help determine if a series of 
+Motivation
+  This project contains a neural network class to help determine if a series of 
   0 or 1 inputs match an AND, OR, or XOR logic pattern. 
   
-Project is currently in progress
+Status
+  Project is currently in progress
