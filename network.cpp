@@ -211,7 +211,9 @@ bool NNetwork::loadIOFile() {
     fstream inputFile;
     string fileName;
     string lineContainer;
+    //Coordinates the second dimension in the array
     int positionFlag = 0;
+    //Sets the file name
     switch (choice) {
         case 1:
             fileName = "and.dat";
@@ -224,6 +226,7 @@ bool NNetwork::loadIOFile() {
             break;
     }
     inputFile.open(fileName);
+    //Checks each char in the file lines; if numeric, adds it to the input array
     for (int i = 0; i < count; i++){
         getline(inputFile, lineContainer);
         for (int o = 0; o < lineContainer.size(); o++){
@@ -234,11 +237,12 @@ bool NNetwork::loadIOFile() {
         }
         positionFlag = 0;
     }
+    positionFlag = 0;
     for (int i = 0; i < count; i++) {
         getline(inputFile, lineContainer);
         for (int o = 0; o < lineContainer.size(); o++){
-            if (isdigit(lineContainer[i])) {
-                outputData[i][positionFlag] = lineContainer[o];
+            if (isdigit(lineContainer[o])) {
+                outputData[i][positionFlag] = lineContainer[o] - 48;
                 positionFlag++;
             }
         }
@@ -313,6 +317,20 @@ void NNetwork::displayTrainingInput(){
         cout << endl;
     }
 }
+
+void NNetwork::displayTrainingOutput() {
+    int innerLoop = 0, outerLoop = 0;
+    cout << endl << "Training Output Data" << endl;
+    for (outerLoop = 0; outerLoop < count; outerLoop++) {
+        cout << "\tPair " << outerLoop << "\t";
+        for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
+            cout << outputData[outerLoop][innerLoop] << " ";
+        }
+        cout << endl;
+    }
+}
+
+
 // ***************** Student Debugs
 void NNetwork::printConfig() {
     cout << "Configuration " << endl;

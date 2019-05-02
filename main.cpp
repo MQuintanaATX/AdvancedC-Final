@@ -24,4 +24,5 @@ int main() {
     skynet.displayHiddenActivations();
     skynet.displayOutputActivations();
     skynet.displayTrainingInput();
+    skynet.displayTrainingOutput();
 }
