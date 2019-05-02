@@ -11,7 +11,7 @@
  * Constructor
  */
 NNetwork::NNetwork() {
-    count = 0;
+    ioPairs = 0;
     loadCfgParams();
     buildInputLayer();
     buildHiddenLayer();
@@ -184,23 +184,23 @@ void NNetwork::buildIOData() {
     }
     inputFile.open(fileName);
     getline(inputFile, lineContainer);
-    count++;
+    ioPairs++;
     firstLine = lineContainer.size();
     //Counts the number of Input lines
     while(!inputFile.eof()){
         getline(inputFile, lineContainer);
         if (lineContainer.size() == firstLine){
-            count++;
+            ioPairs++;
         }
     }
     inputFile.close();
     /*Array Initialization*/
-    inputData = new float* [count];
-    for (int i = 0; i < count; i++) {
+    inputData = new float* [ioPairs];
+    for (int i = 0; i < ioPairs; i++) {
         inputData[i] = new  float [inUnits];
     }
-    outputData = new float *[count];
-    for (int i = 0; i < count; i++) {
+    outputData = new float *[ioPairs];
+    for (int i = 0; i < ioPairs; i++) {
         outputData[i] = new  float [outUnits];
     }
     cout << endl;
@@ -227,7 +227,7 @@ bool NNetwork::loadIOFile() {
     }
     inputFile.open(fileName);
     //Checks each char in the file lines; if numeric, adds it to the input array
-    for (int i = 0; i < count; i++){
+    for (int i = 0; i < ioPairs; i++){
         getline(inputFile, lineContainer);
         for (int o = 0; o < lineContainer.size(); o++){
             if (isdigit(lineContainer[o])) {
@@ -238,7 +238,7 @@ bool NNetwork::loadIOFile() {
         positionFlag = 0;
     }
     positionFlag = 0;
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < ioPairs; i++) {
         getline(inputFile, lineContainer);
         for (int o = 0; o < lineContainer.size(); o++){
             if (isdigit(lineContainer[o])) {
@@ -250,6 +250,23 @@ bool NNetwork::loadIOFile() {
     }
     inputFile.close();
     return true;
+}
+
+/*
+ * Training Functions
+ */
+void NNetwork::train() {
+    for (int i = 0; i < ioPairs; i++){
+        assignActivatons(2);
+    }
+    cout << "AFTER TRAINING" << endl;
+    displayInputActivations();
+}
+
+void NNetwork::assignActivatons(int i) {
+    for (int counter = 0; counter < inUnits; counter++){
+        nNetwork->inputLayer.x[counter] = inputData[i][counter];
+    }
 }
 
 /*
@@ -309,7 +326,7 @@ void NNetwork::displayOutputActivations(){
 void NNetwork::displayTrainingInput(){
     int innerLoop = 0, outerLoop = 0;
     cout << endl << "Training Input Data" << endl;
-    for (outerLoop = 0; outerLoop < count; outerLoop++) {
+    for (outerLoop = 0; outerLoop < ioPairs; outerLoop++) {
         cout << "\tPair " << outerLoop << "\t";
         for (innerLoop = 0; innerLoop < inUnits; innerLoop++) {
             cout << inputData[outerLoop][innerLoop] << " ";
@@ -321,7 +338,7 @@ void NNetwork::displayTrainingInput(){
 void NNetwork::displayTrainingOutput() {
     int innerLoop = 0, outerLoop = 0;
     cout << endl << "Training Output Data" << endl;
-    for (outerLoop = 0; outerLoop < count; outerLoop++) {
+    for (outerLoop = 0; outerLoop < ioPairs; outerLoop++) {
         cout << "\tPair " << outerLoop << "\t";
         for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
             cout << outputData[outerLoop][innerLoop] << " ";

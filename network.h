@@ -137,8 +137,6 @@ private:
     float **inputData, **outputData;
 
     // MQ Variable Declaration */
-    // Holds the # of input pairs
-    int count;
     //Flag to help parse which file is being used
     int choice;
 
