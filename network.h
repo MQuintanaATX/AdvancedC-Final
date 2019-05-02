@@ -157,7 +157,7 @@ private:
        are also used in the test() method. depending on your implementation,
        compute errors may also be used in the test method, but do not use
        adjustWeights in the test method. */
-    void assignActivatons(int);
+    void assignActivations(int);
     void propigateActivations();
     void computeErrors(int);
     void adjustWeights();

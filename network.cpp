@@ -257,15 +257,45 @@ bool NNetwork::loadIOFile() {
  */
 void NNetwork::train() {
     for (int i = 0; i < ioPairs; i++){
-        assignActivatons(2);
+        assignActivations(i);
+        propigateActivations();
+        /*Debug statements: Checks data after activation*/
+        cout << "AFTER LOOP " << i << endl;
+        displayInputActivations();
+        displayHiddenActivations();
+        displayOutputActivations();
     }
-    cout << "AFTER TRAINING" << endl;
-    displayInputActivations();
+
 }
 
-void NNetwork::assignActivatons(int i) {
+void NNetwork::assignActivations(int i) {
     for (int counter = 0; counter < inUnits; counter++){
         nNetwork->inputLayer.x[counter] = inputData[i][counter];
+    }
+}
+
+void NNetwork::propigateActivations() {
+    /*Variable Declaration */
+    float newActivation = 0;
+    //Outer loop handles each of the non-bias hidden nodes
+    for (int i = 0; i < hidUnits; i++) {
+        //Determines the product of each of the input nodes
+        //  the +1 accounts for the bias node
+        for (int j = 0; j < inUnits + 1; j++) {
+            newActivation += nNetwork->inputLayer.x[j] * nNetwork->inputLayer.w[i][j];
+        }
+        nNetwork->hiddenLayer.x[i] = 1.0 / (1.0 + pow(ee, -newActivation));
+    }
+    //Resets newActivation
+    newActivation = 0;
+    //Second loop structure pushes it to the output node
+    for (int i = 0; i < outUnits; i++){
+        //Determines the product of each of the input nodes
+        //  the +1 accounts for the bias node
+        for (int j = 0; j < hidUnits + 1; j++) {
+            newActivation += nNetwork->hiddenLayer.x[j] * nNetwork->hiddenLayer.w[i][j];
+        }
+        nNetwork->outputLayer.x[i] = 1.0 / (1.0 + pow(ee, -newActivation));
     }
 }
 
