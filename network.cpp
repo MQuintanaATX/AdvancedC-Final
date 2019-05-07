@@ -256,16 +256,20 @@ bool NNetwork::loadIOFile() {
  * Training Functions
  */
 void NNetwork::train() {
-    for (int i = 0; i < ioPairs; i++){
-        assignActivations(i);
-        propigateActivations();
-        computeErrors(i);
-        /*Debug statements: Checks data after activation*/
-        cout << "AFTER LOOP " << i << endl;
-        displayInputActivations();
-        displayHiddenActivations();
-        displayOutputActivations();
-    }
+    //for (int j = 0; j < maxEpoch; j++){
+        for (int i = 0; i < ioPairs; i++){
+            assignActivations(i);
+            propigateActivations();
+            computeErrors(i);
+            /*Debug statements: Checks data after activation*/
+            cout << "AFTER LOOP " << i << endl;
+            displayInputActivations();
+            displayHiddenActivations();
+            displayHiddenErrors();
+            displayOutputActivations();
+            displayOutputErrors();
+        }
+   // }
 }
 
 void NNetwork::assignActivations(int i) {
@@ -301,17 +305,19 @@ void NNetwork::propigateActivations() {
 
 void NNetwork::computeErrors(int i) {
     float sum = 0;
+    //Calculate output layer errors
     for (int loop = 0; loop < outUnits; loop++) {
         nNetwork->outputLayer.e[loop] = nNetwork->outputLayer.x[loop] *
                 (1.0 - nNetwork->outputLayer.x[loop]) * (outputData[i][loop] - nNetwork->outputLayer.x[loop]);
     }
-    //resets sum
-    sum = 0;
-    for (int outerLoop = 0; outerLoop < hidUnits; outerLoop++) {
+    //Compute Inner Layer Errors
+    for (int outerLoop = 0; outerLoop < hidUnits + 1; outerLoop++) {
         //Not skipping bias node
         for (int innerLoop = 0; innerLoop < outUnits; innerLoop++) {
-            sum = sum + nNetwork->outputLayer.e[i] * nNetwork->hiddenLayer.w[outerLoop][innerLoop];
+            sum = sum + nNetwork->outputLayer.e[innerLoop] * nNetwork->hiddenLayer.w[outerLoop][innerLoop];
+
         }
+        cout << "DEBUG SUM " << sum << " LOOP " << outerLoop << endl;
         nNetwork->hiddenLayer.e[outerLoop] = (nNetwork->hiddenLayer.x[outerLoop] * (1 - nNetwork->hiddenLayer.x[outerLoop])) * sum;
     }
 }
