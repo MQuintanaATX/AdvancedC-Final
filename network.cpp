@@ -407,3 +407,21 @@ void NNetwork::printConfig() {
     cout << "\tee: " << ee << endl;
 
 }
+
+void NNetwork::displayHiddenErrors(){
+    int outerLoop;
+    cout << endl << "Hidden Layer Errors" << endl;
+    for (outerLoop = 0; outerLoop < hidUnits + 1; outerLoop++) {
+        cout << "\t Node " << outerLoop << " Error ";
+        cout  << nNetwork->hiddenLayer.e[outerLoop] << endl;
+    }
+}
+
+void NNetwork::displayOutputErrors(){
+    int loop;
+    cout << endl << "Output Layer Errors" << endl;
+    for (loop = 0; loop < outUnits; loop++) {
+        cout << "\t Node " << loop << " Error ";
+        cout  << nNetwork->outputLayer.e[loop] << endl;
+    }
+}

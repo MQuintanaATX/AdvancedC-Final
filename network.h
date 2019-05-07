@@ -117,6 +117,8 @@ public:
      * Used to ensure proper configuration. Student's functions
      */
     void printConfig();
+    void displayHiddenErrors();
+    void displayOutputErrors();
 
 private:
     /* this file is for debug purposes. I save my MSE from compute errors so
