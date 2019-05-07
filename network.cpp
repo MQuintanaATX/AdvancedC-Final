@@ -317,8 +317,26 @@ void NNetwork::computeErrors(int i) {
             sum = sum + nNetwork->outputLayer.e[innerLoop] * nNetwork->hiddenLayer.w[outerLoop][innerLoop];
 
         }
-        cout << "DEBUG SUM " << sum << " LOOP " << outerLoop << endl;
         nNetwork->hiddenLayer.e[outerLoop] = (nNetwork->hiddenLayer.x[outerLoop] * (1 - nNetwork->hiddenLayer.x[outerLoop])) * sum;
+    }
+}
+
+void NNetwork::adjustWeights() {
+    int i, j;
+    for( i = 0; i < hidUnits + 1; i++ ){
+        for (j = 0; j < outUnits; j++){
+            nNetwork->hiddenLayer.w[i][j] =
+                    nNetwork->hiddenLayer.w[i][j] +
+                    (learnRate * nNetwork->outputLayer.e[j] * nNetwork->hiddenLayer.x[i]);
+        }
+    }
+
+    for (i = 0; i <inUnits + 1; i++) {
+        for(j = 0; j < hidUnits + 1; j++) {
+            nNetwork->inputLayer.w[i][j] =
+                    nNetwork->inputLayer.w[i][j] +
+                    (learnRate * nNetwork->hiddenLayer.e[j] * nNetwork->inputLayer.x[i]);
+        }
     }
 }
 /*
