@@ -26,4 +26,5 @@ int main() {
     skynet.displayTrainingInput();
     skynet.displayTrainingOutput();
     skynet.train();
+    skynet.test();
 }

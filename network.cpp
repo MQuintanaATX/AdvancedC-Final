@@ -256,20 +256,41 @@ bool NNetwork::loadIOFile() {
  * Training Functions
  */
 void NNetwork::train() {
-    //for (int j = 0; j < maxEpoch; j++){
-        for (int i = 0; i < ioPairs; i++){
+    for (int j = 0; j < maxEpoch; j++) {
+        for (int i = 0; i < ioPairs; i++) {
             assignActivations(i);
             propigateActivations();
             computeErrors(i);
-            /*Debug statements: Checks data after activation*/
-            cout << "AFTER LOOP " << i << endl;
+            adjustWeights();
+            /*Debug statements: Checks data after activation*
             displayInputActivations();
+            displayInputLayerWeights();
             displayHiddenActivations();
             displayHiddenErrors();
+            displayHiddenLayerWeights();
             displayOutputActivations();
-            displayOutputErrors();
+            displayOutputErrors();*/
         }
-   // }
+    }
+}
+
+void NNetwork::test(){
+    cout << "Input Pairs" << endl  <<"\t";
+    for (int i = 0; i < ioPairs; i++) {
+        for (int j = 0; j < inUnits; j++) {
+            cout << inputData[i][j] << "  ";
+        }
+        cout << endl << "\t";
+    }
+    cout << "\nOutput from Network" << endl;
+    for (int i = 0; i < ioPairs; i++) {
+        assignActivations(i);
+        propigateActivations();
+        for (int j = 0; j < outUnits; j++){
+            cout << "\t" << nNetwork->outputLayer.x[j] << "  ";
+        }
+        cout << endl;
+    }
 }
 
 void NNetwork::assignActivations(int i) {
@@ -286,9 +307,10 @@ void NNetwork::propigateActivations() {
         //Determines the product of each of the input nodes
         //  the +1 accounts for the bias node
         for (int j = 0; j < inUnits + 1; j++) {
-            newActivation += nNetwork->inputLayer.x[j] * nNetwork->inputLayer.w[i][j];
+            newActivation += nNetwork->inputLayer.x[j] * nNetwork->inputLayer.w[j][i];
         }
-        nNetwork->hiddenLayer.x[i] = 1.0 / (1.0 + pow(ee, -newActivation));
+        nNetwork->hiddenLayer.x[i] = 1.0 / (1.0 + pow( ee, -newActivation));
+
     }
     //Resets newActivation
     newActivation = 0;
@@ -310,6 +332,7 @@ void NNetwork::computeErrors(int i) {
         nNetwork->outputLayer.e[loop] = nNetwork->outputLayer.x[loop] *
                 (1.0 - nNetwork->outputLayer.x[loop]) * (outputData[i][loop] - nNetwork->outputLayer.x[loop]);
     }
+    sum = 0;
     //Compute Inner Layer Errors
     for (int outerLoop = 0; outerLoop < hidUnits + 1; outerLoop++) {
         //Not skipping bias node
