@@ -361,7 +361,6 @@ void NNetwork::adjustWeights() {
                     (learnRate * nNetwork->outputLayer.e[j] * nNetwork->hiddenLayer.x[i]);
         }
     }
-
     for (i = 0; i < inUnits + 1; i++) {
         for(j = 0; j < hidUnits; j++) {
             nNetwork->inputLayer.w[i][j] =
@@ -374,16 +373,21 @@ void NNetwork::adjustWeights() {
 /*
  * Administrative Functions
  */
-
 void NNetwork::saveweights() {
+    /*
+     * This function assumes everything is configured/named correctly. In a production
+     * environment, this would contain more robust error handling.
+     */
     int innerLoop, outerLoop;
     ofstream weightFile;
     weightFile.open("weights.cfg");
+    //Saves the inner layer's weights
     for (outerLoop = 0; outerLoop < inUnits + 1; outerLoop++) {
         for (innerLoop = 0; innerLoop < hidUnits + 1; innerLoop++) {
             weightFile << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;
         }
     }
+    //Saves the outer layer's weights
     for (outerLoop = 0 ; outerLoop < hidUnits + 1; outerLoop++) {
         for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
             weightFile << nNetwork->hiddenLayer.w[outerLoop][innerLoop] << endl;
@@ -392,6 +396,37 @@ void NNetwork::saveweights() {
     weightFile.close();
 }
 
+void NNetwork::loadweights() {
+    /*
+     * This function assumes everything is configured/named correctly. In a production
+     * environment, this would contain more robust error handling.
+     */
+    int innerLoop, outerLoop;
+    //Holds a string to be converted to a float; used in the get lines
+    string container;
+    float weight;
+    //File object for weights; in a production build, would have further
+    //  validation for file existence
+    fstream weightFile;
+    weightFile.open("weights.cfg");
+    //Loads the inner layer's weights
+    for (outerLoop = 0; outerLoop < inUnits + 1; outerLoop++) {
+        for (innerLoop = 0; innerLoop < hidUnits + 1; innerLoop++) {
+             getline(weightFile, container);
+            weight = stof(container);
+            nNetwork->inputLayer.w[outerLoop][innerLoop] = weight;
+        }
+    }
+    //Loads the outer layer's weights
+    for (outerLoop = 0 ; outerLoop < hidUnits + 1; outerLoop++) {
+        for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
+            getline(weightFile, container);
+            weight = stof(container);
+            nNetwork->hiddenLayer.w[outerLoop][innerLoop] = weight;
+        }
+    }
+    weightFile.close();
+}
 /*
  * Debug Functions
  */
@@ -502,3 +537,4 @@ void NNetwork::displayOutputErrors(){
         cout  << nNetwork->outputLayer.e[loop] << endl;
     }
 }
+
