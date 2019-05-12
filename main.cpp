@@ -26,5 +26,9 @@ int main() {
     skynet.displayTrainingInput();
     skynet.displayTrainingOutput();
     skynet.train();
+
     skynet.test();
+    skynet.displayInputLayerWeights();
+    skynet.displayHiddenLayerWeights();
+    skynet.saveweights();
 }

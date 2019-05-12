@@ -84,8 +84,13 @@ void NNetwork::loadCfgParams() {
 }
 //Responsible for generating random weights for the first pass
 float NNetwork::randomWeight () {
-          //|Casts random into float   | Divides that value, also by float
-    return static_cast <float>(rand()) / static_cast <float> (RAND_MAX);
+    float value;
+    value = static_cast <float>(rand()) / static_cast <float> (RAND_MAX);
+    if (rand() % 2 == 0) {
+        value *= -1;
+    }
+    //|Casts random into float   | Divides that value, also by float
+    return value;
 };
 
 /*
@@ -301,52 +306,55 @@ void NNetwork::assignActivations(int i) {
 
 void NNetwork::propigateActivations() {
     /*Variable Declaration */
-    float newActivation = 0;
+    float sum = 0;
     //Outer loop handles each of the non-bias hidden nodes
     for (int i = 0; i < hidUnits; i++) {
         //Determines the product of each of the input nodes
         //  the +1 accounts for the bias node
-        for (int j = 0; j < inUnits + 1; j++) {
-            newActivation += nNetwork->inputLayer.x[j] * nNetwork->inputLayer.w[j][i];
+        for (int j = 0; j < inUnits +1; j++) {
+            sum += nNetwork->inputLayer.x[j] * nNetwork->inputLayer.w[j][i];
         }
-        nNetwork->hiddenLayer.x[i] = 1.0 / (1.0 + pow( ee, -newActivation));
-
+        nNetwork->hiddenLayer.x[i] = 1.0 / (1.0 + pow(ee, -sum));
+        //Resets newActivation
+        sum = 0;
     }
-    //Resets newActivation
-    newActivation = 0;
+
     //Second loop structure pushes it to the output node
     for (int i = 0; i < outUnits; i++){
         //Determines the product of each of the input nodes
         //  the +1 accounts for the bias node
         for (int j = 0; j < hidUnits + 1; j++) {
-            newActivation += nNetwork->hiddenLayer.x[j] * nNetwork->hiddenLayer.w[i][j];
+            sum = sum + nNetwork->hiddenLayer.x[j] * nNetwork->hiddenLayer.w[i][j];
         }
-        nNetwork->outputLayer.x[i] = 1.0 / (1.0 + pow(ee, -newActivation));
+        nNetwork->outputLayer.x[i] = 1.0 / (1.0 + pow(ee, -sum));
+        //Resets newActivation
+        sum = 0;
     }
 }
 
-void NNetwork::computeErrors(int i) {
+void NNetwork::computeErrors(int current) {
     float sum = 0;
+    int i, j;
     //Calculate output layer errors
-    for (int loop = 0; loop < outUnits; loop++) {
-        nNetwork->outputLayer.e[loop] = nNetwork->outputLayer.x[loop] *
-                (1.0 - nNetwork->outputLayer.x[loop]) * (outputData[i][loop] - nNetwork->outputLayer.x[loop]);
+    for (j = 0; j < outUnits; j++) {
+        nNetwork->outputLayer.e[j] = nNetwork->outputLayer.x[j] *
+                (1.0 - nNetwork->outputLayer.x[j]) * (outputData[current][j] - nNetwork->outputLayer.x[j]);
     }
-    sum = 0;
-    //Compute Inner Layer Errors
-    for (int outerLoop = 0; outerLoop < hidUnits + 1; outerLoop++) {
+    //Compute Hidden Layer Errors
+    //hidUnits is set to 2 in the config; +1 accounts for the bias
+    for (j = 0; j < hidUnits + 1; j++) {
         //Not skipping bias node
-        for (int innerLoop = 0; innerLoop < outUnits; innerLoop++) {
-            sum = sum + nNetwork->outputLayer.e[innerLoop] * nNetwork->hiddenLayer.w[outerLoop][innerLoop];
+        for (i = 0; i < outUnits; i++) {
+            sum = sum + nNetwork->outputLayer.e[i] * nNetwork->hiddenLayer.w[j][i];
 
         }
-        nNetwork->hiddenLayer.e[outerLoop] = (nNetwork->hiddenLayer.x[outerLoop] * (1 - nNetwork->hiddenLayer.x[outerLoop])) * sum;
+        nNetwork->hiddenLayer.e[j] = (nNetwork->hiddenLayer.x[j] * (1 - nNetwork->hiddenLayer.x[j])) * sum;
     }
 }
 
 void NNetwork::adjustWeights() {
     int i, j;
-    for( i = 0; i < hidUnits + 1; i++ ){
+    for(i = 0; i < hidUnits + 1; i++ ){
         for (j = 0; j < outUnits; j++){
             nNetwork->hiddenLayer.w[i][j] =
                     nNetwork->hiddenLayer.w[i][j] +
@@ -354,14 +362,36 @@ void NNetwork::adjustWeights() {
         }
     }
 
-    for (i = 0; i <inUnits + 1; i++) {
-        for(j = 0; j < hidUnits + 1; j++) {
+    for (i = 0; i < inUnits + 1; i++) {
+        for(j = 0; j < hidUnits; j++) {
             nNetwork->inputLayer.w[i][j] =
                     nNetwork->inputLayer.w[i][j] +
                     (learnRate * nNetwork->hiddenLayer.e[j] * nNetwork->inputLayer.x[i]);
         }
     }
 }
+
+/*
+ * Administrative Functions
+ */
+
+void NNetwork::saveweights() {
+    int innerLoop, outerLoop;
+    ofstream weightFile;
+    weightFile.open("weights.cfg");
+    for (outerLoop = 0; outerLoop < inUnits + 1; outerLoop++) {
+        for (innerLoop = 0; innerLoop < hidUnits + 1; innerLoop++) {
+            weightFile << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;
+        }
+    }
+    for (outerLoop = 0 ; outerLoop < hidUnits + 1; outerLoop++) {
+        for (innerLoop = 0; innerLoop < outUnits; innerLoop++) {
+            weightFile << nNetwork->hiddenLayer.w[outerLoop][innerLoop] << endl;
+        }
+    }
+    weightFile.close();
+}
+
 /*
  * Debug Functions
  */
