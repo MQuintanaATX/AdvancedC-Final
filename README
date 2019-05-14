@@ -5,7 +5,7 @@ Motivation
   0 or 1 inputs match an AND, OR, or XOR logic pattern. 
   
 Status
-  Project is currently in progress
+  Project is currently complete, with one unresolved bug due to time constraints. 
 
 Additional Details
   "network.h" has been supplied by the instructor; my edits have been commented on. All other code
