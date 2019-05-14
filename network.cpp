@@ -11,6 +11,7 @@
  * Constructor
  */
 NNetwork::NNetwork() {
+    nNetwork = new nNet;
     ioPairs = 0;
     loadCfgParams();
     buildInputLayer();
@@ -117,9 +118,6 @@ void NNetwork::buildInputLayer() {
         }
         for (innerLoop = 0; innerLoop < hidUnits + 1; innerLoop++) {
             nNetwork->inputLayer.w[outerLoop][innerLoop] = randomWeight();
-            /*debug statements to help with displayInnerLayerWeights
-            cout << "DEBUG\t Node " << outerLoop << " Weight# " << innerLoop;
-            cout << " Weight " << nNetwork->inputLayer.w[outerLoop][innerLoop] << endl;*/
         }
     }
 }
@@ -267,14 +265,6 @@ void NNetwork::train() {
             propigateActivations();
             computeErrors(i);
             adjustWeights();
-            /*Debug statements: Checks data after activation*
-            displayInputActivations();
-            displayInputLayerWeights();
-            displayHiddenActivations();
-            displayHiddenErrors();
-            displayHiddenLayerWeights();
-            displayOutputActivations();
-            displayOutputErrors();*/
         }
     }
 }
@@ -346,7 +336,6 @@ void NNetwork::computeErrors(int current) {
         //Not skipping bias node
         for (i = 0; i < outUnits; i++) {
             sum = sum + nNetwork->outputLayer.e[i] * nNetwork->hiddenLayer.w[j][i];
-
         }
         nNetwork->hiddenLayer.e[j] = (nNetwork->hiddenLayer.x[j] * (1 - nNetwork->hiddenLayer.x[j])) * sum;
     }
@@ -506,7 +495,7 @@ void NNetwork::displayTrainingOutput() {
 }
 
 
-// ***************** Student Debugs
+/* **************** Student Debugs
 void NNetwork::printConfig() {
     cout << "Configuration " << endl;
     cout << "\tON: " << on << endl;
@@ -537,4 +526,4 @@ void NNetwork::displayOutputErrors(){
         cout  << nNetwork->outputLayer.e[loop] << endl;
     }
 }
-
+*/

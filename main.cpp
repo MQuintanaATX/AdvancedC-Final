@@ -9,8 +9,7 @@
 
 
 #include "main.h"
-#include "functions.h"
-#include "network.h"
+
 
 int main() {
     cout << "Final Project: Neural Network" << endl;

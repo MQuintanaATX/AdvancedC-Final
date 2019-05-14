@@ -10,6 +10,7 @@
 #ifndef FINAL_MAIN_H
 #define FINAL_MAIN_H
 using namespace std;
-
+#include "functions.h"
+#include "network.h"
 
 #endif //FINAL_MAIN_H
